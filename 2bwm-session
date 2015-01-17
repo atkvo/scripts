@@ -1,0 +1,15 @@
+#!/bin/bash
+
+xsetroot -solid grey20 &
+xsetroot -cursor_name left_ptr &
+touchpadsettings.sh &
+dualmon.sh &
+sleep 1 &
+setwallpaper.sh &
+compton -b --config="/home/avo/.config/compton.conf" &
+#tint2 &
+dzbar.sh &
+skippy-xd --start-daemon &
+sxhkd -c /home/avo/.config/sxhkd/sxhkd_general &
+xrdb -load ~/.Xresources &
+exec 2bwm 
