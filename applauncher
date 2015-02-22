@@ -1,0 +1,13 @@
+#!/bin/bash
+
+#NB=black
+NF="'#1d1f21'"
+#NF=white
+NB="'#C5C8C6'"
+SB="'#1d1f21'"
+SF="'#C5C8C6'"
+FONT=Terminus-9:normal
+
+CMD="dmenu -i -l 40 -w 200 -x 200 -y 80 -nf $NF -nb $NB -sb $SB -sf $SF -dim .8 -fn $FONT"
+#exec $CMD
+j4-dmenu-desktop --dmenu="$CMD"
