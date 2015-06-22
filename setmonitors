@@ -1,8 +1,50 @@
 #!/bin/bash
 
+USER="$(who | grep :0\) | cut -f 1 -d ' ')"
+export XAUTHORITY=/home/$USER/.Xauthority
+export DISPLAY=:0
 
-DUAL="--output eDP1 --off --output HDMI1 --auto --right-of HDMI2"
-LAPONLY="--output eDP1 --auto"
+# HDMI1 = DisplayPort
+# HDMI1=$(xrandr | grep -w HDMI1 | awk '{print $2}')
+HDMI1=$(xrandr | grep "HDMI1 connected")
 
-xrandr $DUAL &
+# HMDI2 = HDMI Port
+# HDMI2=$(xrandr | grep -w HDMI2 | awk '{print $2}')
+HDMI2=$(xrandr | grep "HDMI2 connected")
+
+# eDP1  = Built in monitor
+# EDP1=$(xrandr | grep -w eDP1 | awk '{print $2}')
+EDP1=$(xrandr | grep "eDP1 connected")
+
+DUAL="--output eDP1 --off --output HDMI2 --rotate right --auto --output HDMI1 --primary --pos
+1080x385 --auto --right-of HDMI2"
+DISPLAYPORT="--output HDMI1 --auto --output HDMI2 --off --output eDP1 --off"
+# HDMIPORT="--output HDMI2 --auto --primary --output HDMI1 --off --output eDP1 --off"
+HDMIPORT="--output HDMI2 --auto --primary --output HDMI1 --off --output eDP1 --off"
+LAPONLY="--output eDP1 --auto --output HDMI1 --off --output HDMI2 --off"
+
+#echo $HDMI1 $HDMI2 $EDP1
+
+if [ -n "$HDMI1" ]
+then
+    if [ -n "$HDMI2" ]
+    then
+        echo DUAL >> ~/.setcheck &
+        xrandr $DUAL &
+        xrandr --output HDMI1 --pos 1080x385 &
+    else
+        echo DISPLAYPORT  >> ~/.setcheck &
+        xrandr $DISPLAYPORT &
+    fi
+elif [ -n "$HDMI2" ]
+then
+    echo HDMIPORT >> ~/.setcheck &
+    xrandr $HDMIPORT &
+else
+    echo laptop >> ~/.setcheck & 
+    xrandr $LAPONLY &
+fi
+
+#xrandr $DUAL &
+
 nitrogen --restore

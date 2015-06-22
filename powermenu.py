@@ -17,11 +17,6 @@ def _Getch():
 
 
 def main():
-    #option = input('SH(U)TDOWN, (R)ESTART, (S)LEEP')
-    #print('|-- POWER OPTIONS ---------------|')
-    #print('|--------------------------------|')
-    #print('| SH[U]TDOWN, [R]ESTART, [S]LEEP |')
-    #print('|--------------------------------|')
     print('\n\
                _________________              \n\
             __/  POWER OPTIONS  \____________ \n\
@@ -33,18 +28,32 @@ def main():
             |                                |\n\
             |________________________________|\n\
          ')
-#     option = sys.stdin.read(1)
     option = _Getch()
 
     if option == 'u' or option == 'U':
-        print('\n\t GOODBYE! ')
-        subprocess.call(["sudo", "shutdown", "-h" ,"now"])
+        print('\n\t Are you sure? Y/N')
+        option = _Getch()
+        if option == 'y' or option == 'Y':
+            print('\n\t GOODBYE! ')
+            # subprocess.call(["shutdown", "-h" ,"now"])
+            # subprocess.call(["systemctl", "poweroff" ])
+            subprocess.call(["poweroff"])
+        else:
+            print("\tSHUTDOWN ABORTED")
+
     elif option == 'r' or option == 'R':
-        print('\n\t BE RIGHT BACK! ')
-        subprocess.call(["sudo", "shutdown", "-r" ,"now"])
+        print('\n\t Are you sure? Y/N')
+        option = _Getch()
+        if option == 'y' or option == 'Y':
+            print('\n\t BE RIGHT BACK! ')
+            subprocess.call(["shutdown", "-r" ,"now"])
+        else:
+            print("\tREBOOT ABORTED")
+
     elif option == 's' or option == 'S':
         print('\n\t NAP TIME! ')
-        subprocess.call(["sudo", "pm-suspend"])
+        subprocess.call(["systemctl", "suspend"])
+
     else:
         print("ABORTED")
     
